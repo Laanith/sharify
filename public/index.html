@@ -81,7 +81,7 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script>
-    (function () {
+    
 
       /**
        * Obtains parameters from the hash of the URL
@@ -133,7 +133,7 @@
           });
 
           async function getAllObjects(url, headers, results = []) {
-            const response = await fetch(url, { headers });
+            const response = await fetch(url,  headers );
             const data = await response.json();
             results.push(...data.items);
 
@@ -264,14 +264,6 @@
             });
 
 
-            
-
-          
-
-
-
-
-
 
 
 
@@ -299,7 +291,6 @@
           });
         }, false);
       }
-    })();
   </script>
 </body>
 
