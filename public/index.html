@@ -82,11 +82,6 @@
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script>
     
-
-      /**
-       * Obtains parameters from the hash of the URL
-       * @return Object
-       */
       function getHashParams() {
         var hashParams = {};
         var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -97,7 +92,9 @@
         return hashParams;
       }
 
-      var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+
+
+        userProfileSource = document.getElementById('user-profile-template').innerHTML,
         userProfileTemplate = Handlebars.compile(userProfileSource),
         userProfilePlaceholder = document.getElementById('user-profile');
 
@@ -106,9 +103,11 @@
       var params = getHashParams();
       
 
-      var access_token = params.access_token,
+        access_token = params.access_token,
         refresh_token = params.refresh_token,
         userid = params.url;
+
+
         if(userid){
           user = userid.substring(13);
         }
@@ -123,6 +122,7 @@
             url: 'https://api.spotify.com/v1/me',
             headers: {
               'Authorization': 'Bearer ' + access_token
+
             },
             success: function (response) {
               userProfilePlaceholder.innerHTML = userProfileTemplate(response);
@@ -133,21 +133,29 @@
           });
 
           async function getAllObjects(url, headers, results = []) {
-            const response = await fetch(url,  headers );
-            const data = await response.json();
-            results.push(...data.items);
+            try {
+              const response = await fetch(url, { headers });
+              const data = await response.json();
+              results.push(...data.items);
 
-            if (data.next !== null) {
-              return getAllObjects(data.next, headers, results);
+              if (data.next !== null) {
+                return await getAllObjects(data.next, headers, results);
+              }
+
+              return results;
+            } catch (error) {
+              console.log('An error occurred in fetch api calls');
+              console.error(error);
+              throw error;
+              // throw error;
             }
-
-            return results;
           }
+
 
           // Example usage
           const apiUrl = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=50';
-          const headers = {
-            'Authorization': 'Bearer ' + access_token
+          headers = {
+            'Authorization': 'Bearer ' + access_token,
           };
 
           function renderCards (item){
@@ -236,7 +244,7 @@
                         },
                         error: function (error) {
                           // Handle any errors
-                          console.error('Error:', error.responseJSON);
+                          console.log(error.responseJSON);
                         }
                         
                       });
@@ -250,7 +258,7 @@
                 },
                 error: function (error) {
                   // Handle any errors
-                  console.error('Error:', error);
+                  console.log(error);
                 }
               });
 
@@ -260,7 +268,7 @@
 
             })
             .catch(error => {
-              console.error('Error:', error);
+              console.log(error);
             });
 
 
@@ -276,21 +284,21 @@
           $('#loggedin').hide();
         }
 
-        document.getElementById('obtain-new-token').addEventListener('click', function () {
-          $.ajax({
-            url: '/refresh_token',
-            data: {
-              'refresh_token': refresh_token
-            }
-          }).done(function (data) {
-            access_token = data.access_token;
-            oauthPlaceholder.innerHTML = oauthTemplate({
-              access_token: access_token,
-              refresh_token: refresh_token
-            });
-          });
-        }, false);
-      }
+        // document.getElementById('obtain-new-token').addEventListener('click', function () {
+        //   $.ajax({
+        //     url: '/refresh_token',
+        //     data: {
+        //       'refresh_token': refresh_token
+        //     }
+        //   }).done(function (data) {
+        //     access_token = data.access_token;
+        //     oauthPlaceholder.innerHTML = oauthTemplate({
+        //       access_token: access_token,
+        //       refresh_token: refresh_token
+        //     });
+        //   });
+        // }, false);
+     }
   </script>
 </body>
 

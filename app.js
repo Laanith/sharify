@@ -1,12 +1,3 @@
-/**
- * This is an example of a basic node.js script that performs
- * the Authorization Code oAuth2 flow to authenticate against
- * the Spotify Accounts.
- *
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
- */
-
 var express = require("express"); // Express web server framework
 var request = require("request"); // "Request" library
 var cors = require("cors");
@@ -47,7 +38,8 @@ app.get("/login", function (req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = "user-read-private user-read-email user-read-playback-state playlist-read-private user-library-read playlist-modify-private playlist-modify-public";
+  var scope =
+    "user-read-private user-read-email user-library-read user-library-modify playlist-read-private playlist-modify-public playlist-modify-private user-follow-read user-follow-modify user-top-read user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-recently-played app-remote-control streaming user-read-private user-read-email user-library-read user-library-modify playlist-read-collaborative playlist-modify-public playlist-modify-private ugc-image-upload user-follow-read user-follow-modify user-top-read user-read-playback-state user-read-currently-playing user-modify-playback-state user-read-recently-played user-read-playback-position user-read-recently-played user-read-private user-library-read user-library-modify playlist-read-collaborative playlist-modify-public playlist-modify-private";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
